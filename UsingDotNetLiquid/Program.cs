@@ -24,9 +24,16 @@ namespace UsingDotNetLiquid
             Template.FileSystem = new LocalFileSystem(Directory.GetCurrentDirectory());
 
             const string source = @"
+{% assign hello_world = ""Hello World!"" %}
+{{ hello_world }}
+{%- capture a_variable -%} My favourite greeting is {{ hello_world }} {%- endcapture -%}
+{%- comment -%} https://shopify.github.io/liquid/basics/whitespace/ {%- endcomment -%}
+Example of capture, {{ a_variable }}
 hi {{ name | my }}, 
-hi {{ name | your_great }}, 
+hi {{ name | your_great: "".html"" }}
+hi {{ name | your_great: hello_world }}
 {% include ""partial_template"" %}
+{{ foo.greet() }}
 {{ foo.bar }}
 {{ foo.unknown }}
 {{ bar.baz }}
@@ -53,10 +60,14 @@ hi {{ name | your_great }},
 
             Console.WriteLine(result);
             /*
+Hello World!
+Example of capture,  My favourite greeting is Hello World!
 hi my tobi,
-hi your great tobi,
+hi your great tobi in .html
+hi your great tobi in Hello World!
 Hi from partial template, bar
 Hi from other partial template, bar
+Hello bar
 bar
 method: unknown
 baz
@@ -79,9 +90,11 @@ my-block inside my custom block
     // snake_case, your_great
     public static class YourFilter
     {
-        public static string YourGreat(Context context, string input)
+        public static string YourGreat(Context context, string name, string input)
         {
-            return $"your great {input}";
+            // name = "tobi"
+            // input = ".html", "Hello World!"
+            return $"your great {name} in {input}";
         }
     }
 
@@ -141,6 +154,8 @@ my-block inside my custom block
         }
 
         public string Bar => _foo.Bar;
+
+        public string Greet() => $"Hello {_foo.Bar}";
 
         public override object BeforeMethod(string method)
         {
