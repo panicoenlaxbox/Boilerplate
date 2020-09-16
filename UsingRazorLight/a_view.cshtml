@@ -1,0 +1,5 @@
+﻿@*https://github.com/toddams/RazorLight#enable-intellisense-support*@
+@using RazorLight
+@inherits TemplatePage<dynamic>
+Hello @Model.Name from a file view
+@{ await IncludeAsync("an_other_view.cshtml", Model); }

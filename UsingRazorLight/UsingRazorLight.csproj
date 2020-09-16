@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<!--https://github.com/toddams/RazorLight#im-getting-cant-load-metadata-reference-from-the-entry-assembly-exception-->
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="a_embedded_resource.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="a_embedded_resource.cshtml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RazorLight" Version="2.0.0-beta9" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="an_other_view.cshtml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="a_view.cshtml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
